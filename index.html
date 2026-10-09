@@ -6,73 +6,90 @@
 <title>Modelos 3D – Ing Zahid</title>
 <script type="module" src="lib/model-viewer.min.js"></script>
 <style>
-  :root { --bg:#f3f2ee; --ink:#1d1d1b; --muted:#6b6a64; --card:#fff; --line:#dddbd3; --acc:#c8792f; }
+  :root { --bg:#f3f2ee; --ink:#1d1d1b; --muted:#6b6a64; --card:#fff; --line:#dddbd3; --acc:#c8792f; --acc2:#3c6eb4; }
   @media (prefers-color-scheme: dark) { :root { --bg:#161614; --ink:#efeee9; --muted:#a3a29b; --card:#22221f; --line:#363631; } }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
   header { padding:16px 16px 8px; }
-  h1 { margin:0; font-size:20px; letter-spacing:.2px; }
+  h1 { margin:0; font-size:20px; }
   .sub { color:var(--muted); font-size:13px; margin-top:2px; }
-  model-viewer { width:100%; height:62vh; background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line); --poster-color:transparent; }
-  .controls { padding:12px 16px; display:grid; gap:10px; }
-  .seg { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
-  .seg button { border:0; padding:12px; background:var(--card); color:var(--ink); font-size:15px; }
-  .seg button.on { background:var(--ink); color:var(--bg); font-weight:600; }
-  .ar { width:100%; padding:16px; border:0; border-radius:12px; background:var(--acc); color:#fff; font-size:17px; font-weight:700; }
+  model-viewer { width:100%; height:55vh; background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .controls { padding:12px 16px 24px; display:grid; gap:10px; }
+  .btn { display:block; width:100%; padding:15px; border:0; border-radius:12px; color:#fff; font-size:16px; font-weight:700; text-align:center; text-decoration:none; }
+  .real { background:var(--acc); } .maq { background:var(--acc2); }
+  .alt { background:transparent; color:var(--ink); border:1px solid var(--line); font-weight:500; font-size:14px; padding:11px; }
   .legend { display:flex; flex-wrap:wrap; gap:8px 14px; font-size:13px; color:var(--muted); }
   .legend span::before { content:""; display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; background:var(--c); }
   .note { font-size:13px; color:var(--muted); }
+  .note ol { margin:4px 0 0; padding-left:18px; }
   select { width:100%; padding:10px; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--ink); font-size:15px; }
-  #noar { display:none; color:#b3402a; font-size:13px; }
+  #msg { display:none; color:#b3402a; font-size:13px; }
 </style>
 </head>
 <body>
 <header>
-  <h1 id="titulo">ESC Reticular Porex</h1>
-  <div class="sub" id="dims">Estructura · 16.2 × 21.3 × 19.2 m</div>
+  <h1 id="titulo"></h1>
+  <div class="sub" id="dims"></div>
 </header>
 
-<model-viewer id="mv" src="modelos/ESC_ReticularPorex.glb" camera-controls touch-action="pan-y"
-  ar ar-modes="scene-viewer webxr quick-look" ar-scale="fixed" ar-placement="floor"
-  shadow-intensity="0.6" exposure="1" camera-orbit="35deg 65deg auto" alt="Modelo estructural 3D">
+<model-viewer id="mv" camera-controls touch-action="pan-y" ar ar-modes="webxr" ar-scale="auto"
+  shadow-intensity="0.6" camera-orbit="35deg 65deg auto" alt="Modelo estructural 3D">
   <button slot="ar-button" style="display:none"></button>
 </model-viewer>
 
 <div class="controls">
   <select id="modelo"></select>
-  <div class="seg">
-    <button id="real" class="on">Escala real 1:1</button>
-    <button id="libre">Escala libre (mesa)</button>
-  </div>
-  <button class="ar" id="verAR">Ver en tu espacio</button>
-  <div id="noar">Este dispositivo o navegador no soporta realidad aumentada. Ábrelo en Chrome en Android con ARCore (Servicios de Google Play para RA).</div>
+  <a class="btn real" id="btnReal">Ver a escala real 1:1</a>
+  <a class="btn maq" id="btnMaq">Ver maqueta 1:50 sobre la mesa</a>
+  <button class="btn alt" id="btnAlt">Si no aparece: probar visor alternativo</button>
+  <div id="msg">Este navegador no soporta el visor alternativo. Usa Chrome en Android.</div>
   <div class="legend">
-    <span style="--c:#bebeb9">Losas</span>
-    <span style="--c:#d68c3c">Vigas</span>
-    <span style="--c:#3c6eb4">Columnas</span>
-    <span style="--c:#78786e">Zapatas</span>
-    <span style="--c:#c8b496">Muros</span>
-    <span style="--c:#96a05a">Escaleras</span>
+    <span style="--c:#bebeb9">Losas</span><span style="--c:#d68c3c">Vigas</span>
+    <span style="--c:#3c6eb4">Columnas</span><span style="--c:#78786e">Zapatas</span>
+    <span style="--c:#c8b496">Muros</span><span style="--c:#96a05a">Escaleras</span>
   </div>
-  <div class="note"><b>Escala real:</b> el modelo aparece 1:1 desde el nivel más bajo (zapatas) y no se puede escalar; necesitas espacio abierto. <b>Escala libre:</b> pellizca para hacerlo pequeño y verlo sobre una mesa.</div>
+  <div class="note"><b>Cómo verlo:</b>
+    <ol>
+      <li>Al abrir la cámara, apunta al piso y mueve el celular despacio de lado a lado hasta que detecte la superficie.</li>
+      <li><b>Escala real:</b> el edificio aparece a 3 m frente a ti y mide ~21 m de fondo y 19 m de alto: retrocede y levanta el celular para verlo completo. Mejor en exterior.</li>
+      <li><b>Maqueta 1:50:</b> mide unos 32 × 43 cm; apunta a una mesa. Puedes girarlo y moverlo con los dedos.</li>
+    </ol>
+  </div>
 </div>
 
 <script>
-  // Lista de modelos: agrega aquí nuevos .glb
+  // Lista de modelos: cada uno tiene versión visor, real (1:1 desplazada al frente) y maqueta (1:50)
   const MODELOS = [
-    { nombre: "ESC Reticular Porex", archivo: "modelos/ESC_ReticularPorex.glb", dims: "16.2 × 21.3 × 19.2 m" },
+    { nombre:"ESC Reticular Porex", base:"modelos/ESC_ReticularPorex", dims:"16.2 × 21.3 × 19.2 m" },
   ];
-  const mv = document.getElementById('mv'), sel = document.getElementById('modelo');
+  const $ = id => document.getElementById(id);
+  const mv = $('mv'), sel = $('modelo');
+  const abs = p => new URL(p, location.href).href;
+  function sceneViewer(file, resizable, title) {
+    const q = new URLSearchParams({ file: abs(file), mode: 'ar_only', resizable: String(resizable), title });
+    const fallback = encodeURIComponent(location.href);
+    return 'intent://arvr.google.com/scene-viewer/1.2?' + q.toString() +
+      '#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=' + fallback + ';end;';
+  }
+  function cargar(i) {
+    const m = MODELOS[i];
+    mv.src = m.base + '.glb';
+    $('titulo').textContent = m.nombre;
+    $('dims').textContent = 'Estructura · ' + m.dims;
+    $('btnReal').href = sceneViewer(m.base + '_real.glb', false, m.nombre + ' (1:1)');
+    $('btnMaq').href  = sceneViewer(m.base + '_maqueta.glb', true, m.nombre + ' (1:50)');
+  }
   MODELOS.forEach((m, i) => sel.add(new Option(m.nombre, i)));
   sel.style.display = MODELOS.length > 1 ? '' : 'none';
-  sel.onchange = () => { const m = MODELOS[sel.value]; mv.src = m.archivo;
-    document.getElementById('titulo').textContent = m.nombre;
-    document.getElementById('dims').textContent = 'Estructura · ' + m.dims; };
-  const real = document.getElementById('real'), libre = document.getElementById('libre');
-  real.onclick = () => { mv.setAttribute('ar-scale','fixed'); real.classList.add('on'); libre.classList.remove('on'); };
-  libre.onclick = () => { mv.setAttribute('ar-scale','auto'); libre.classList.add('on'); real.classList.remove('on'); };
-  document.getElementById('verAR').onclick = () => {
-    if (mv.canActivateAR) mv.activateAR(); else document.getElementById('noar').style.display = 'block';
+  sel.onchange = () => cargar(sel.value);
+  cargar(0);
+  // Alternativo: WebXR dentro de Chrome con la maqueta (se puede escalar con los dedos)
+  $('btnAlt').onclick = () => {
+    const m = MODELOS[sel.value || 0];
+    mv.src = m.base + '_maqueta.glb';
+    mv.addEventListener('load', () => {
+      if (mv.canActivateAR) mv.activateAR(); else $('msg').style.display = 'block';
+    }, { once: true });
   };
 </script>
 </body>
