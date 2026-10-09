@@ -66,10 +66,10 @@
   const mv = $('mv'), sel = $('modelo');
   const abs = p => new URL(p, location.href).href;
   function sceneViewer(file, resizable, title) {
-    const q = new URLSearchParams({ file: abs(file), mode: 'ar_only', resizable: String(resizable), title });
+    const q = new URLSearchParams({ file: abs(file), mode: 'ar_preferred', resizable: String(resizable), title });
     const fallback = encodeURIComponent(location.href);
     return 'intent://arvr.google.com/scene-viewer/1.2?' + q.toString() +
-      '#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=' + fallback + ';end;';
+      '#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=' + fallback + ';end;';
   }
   function cargar(i) {
     const m = MODELOS[i];
